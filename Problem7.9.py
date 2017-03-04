@@ -1,8 +1,12 @@
 import pandas
 import numpy
+import math
 
 # For linear regression
 from sklearn import linear_model
+
+# For transformations
+from scipy import stats
 
 # For polynomial regression
 from sklearn.linear_model import Ridge
@@ -14,6 +18,48 @@ import plotly.plotly as py
 import plotly.graph_objs as go
 import matplotlib.pyplot as plt
 
+
+def regress_curve_2():
+	filename = "sulfate_dataset.txt"
+	my_data = pandas.read_csv(filename, sep="\t", header=0)
+
+	x = my_data["Hours"].values
+	y = my_data["Sulfate"].values
+
+	# Box Cox Transformtaion on Y
+	y_transformed, lamb = stats.boxcox(y)		
+	y = y.reshape(-1, 1)
+	x = x.reshape(-1, 1)
+
+	model = linear_model.LinearRegression()
+	model.fit(x, y)
+
+	print lamb				# lamb = -1.10251654861
+	print model.coef_		# [[-0.00061966]]
+	
+	# Predict y
+	y_predicted = model.predict(x)
+	
+	# Transform the predicted y
+	y_predicted_transformed = numpy.array([math.pow(y_predicted[i][0], lamb) for i in range(len(y))]).reshape(-1, 1)
+
+	plt.scatter(x, y, color='green', label="Original Data Points")	# Original data points transformed
+	plt.plot(x, y_predicted_transformed, 'o', color='red', label="Regression Curve")								# plot predicted y vs x curve
+	plt.title("Blood Sulfate in a Baboon Named Brunhilda Regression Curve")
+	plt.ylabel("Sulfate")
+	plt.xlabel("Hours")
+	plt.legend(loc='upper right')
+	plt.show()
+	
+
+	residual = y - y_predicted_transformed
+	plt.scatter(y, residual, color='green')
+	plt.title("Residual Against Fitted Values")
+	plt.ylabel("Residual Error")
+	plt.xlabel("Fitted Values")
+	plt.show()
+
+# Delete this
 def regress_curve():
 	filename = "sulfate_dataset.txt"
 	my_data = pandas.read_csv(filename, sep="\t", header=0)
@@ -77,9 +123,11 @@ def regress_log_log():
 	plt.show()
 
 def main():
-	regress_log_log()
+	#regress_log_log()
 
-	regress_curve()
+	#regress_curve()
+
+	regress_curve_2()
 
 if __name__ == '__main__':
 	main()

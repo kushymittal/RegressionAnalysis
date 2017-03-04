@@ -18,6 +18,14 @@ def linear_reg():
 	filename = "physical.txt"
 	my_data = pandas.read_csv(filename, sep="\t", header=0)
 
+	#x_values = my_data[:, 1:11].values
+	y_values = my_data["Mass"].values.reshape(-1, 1)
+	#print x_values
+	print y_values
+
+	#model = linear_model.LinearRegression()
+	#model.fit(x_values, y_values)
+
 
 def cube_root_reg():
 	filename = "sulfate_dataset.txt"
