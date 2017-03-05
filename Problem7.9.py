@@ -115,7 +115,11 @@ def regress_log_log():
 	plt.show()
 
 	# Plot the residual against the fitted values
-	residual = y_values - model.predict(x_values)
+	y_predicted = model.predict(x_values)
+
+	y_predicted_transformed = numpy.array([math.pow(y_predicted[i][0], math.e) for i in range(len(y_predicted))]).reshape(-1, 1)
+
+	residual = y_values - y_predicted_transformed		# change to e^
 	plt.scatter(y_values, residual, color='black')
 	plt.title("Residual Against Fitted Values")
 	plt.ylabel("Residual Error")
@@ -123,11 +127,11 @@ def regress_log_log():
 	plt.show()
 
 def main():
-	#regress_log_log()
+	regress_log_log()
 
 	#regress_curve()
 
-	regress_curve_2()
+	#regress_curve_2()
 
 if __name__ == '__main__':
 	main()
