@@ -32,16 +32,16 @@ def regress_curve_2():
 	x = x.reshape(-1, 1)
 
 	model = linear_model.LinearRegression()
-	model.fit(x, y)
+	model.fit(x, y_transformed)
 
 	print lamb				# lamb = -1.10251654861
 	print model.coef_		# [[-0.00061966]]
 	
 	# Predict y
 	y_predicted = model.predict(x)
-	
+	print y_predicted
 	# Transform the predicted y
-	y_predicted_transformed = numpy.array([math.pow(y_predicted[i][0], lamb) for i in range(len(y))]).reshape(-1, 1)
+	y_predicted_transformed = numpy.array([math.pow(y_predicted[i], lamb) for i in range(len(y))]).reshape(-1, 1)
 
 	plt.scatter(x, y, color='green', label="Original Data Points")	# Original data points transformed
 	plt.plot(x, y_predicted_transformed, 'o', color='red', label="Regression Curve")								# plot predicted y vs x curve
@@ -127,11 +127,11 @@ def regress_log_log():
 	plt.show()
 
 def main():
-	regress_log_log()
+	#regress_log_log()
 
 	#regress_curve()
 
-	#regress_curve_2()
+	regress_curve_2()
 
 if __name__ == '__main__':
 	main()

@@ -18,23 +18,23 @@ def log_regress():
 	y_values_1 = my_data[[7]].values
 
 	# Dataset description says add 1.5 to get age in year
-	y_values = y_values_1 + 1.5
+	y_values_1 = y_values_1 + 1.5
 
 	# Take the log of the entire dataset
-	x_values = numpy.log(x_values)
-	y_values = numpy.log(y_values)
+	#x_values = numpy.log(x_values)
+	y_values = numpy.log(y_values_1)
 
 	model = linear_model.LinearRegression()
 	model.fit(x_values, y_values)
 
-	print model.coef_			# [[-0.37012624  0.15745183  0.02948508  0.54335089 -0.52096194 -0.05743193	 0.3337817 ]]
+	print model.coef_			# [[ 0.25603512  1.39372311  1.11692882  0.58249223 -1.49644684 -0.65516573		0.54529821]]
 
 	y_predicted = model.predict(x_values)
 	y_predicted_transformed = numpy.array([math.pow(y_predicted[i][0], math.e) for i in range(len(y_values))]).reshape(-1, 1)
 
 	residual = y_values_1 - y_predicted_transformed
-	plt.scatter(y_values, residual, color='green')
-	plt.title("Residual Against Fitted Values Without Gender")
+	plt.scatter(y_values_1, residual, color='green')
+	plt.title("Residual Against Log Fitted Values Without Gender")
 	plt.ylabel("Residual Error")
 	plt.xlabel("Age (In Years)")
 	plt.show()
@@ -48,17 +48,16 @@ def log_regress_with_gender():						# FIX ME
 	my_data = my_data.replace("F", 1)
 	my_data = my_data.replace("M", -1)
 	my_data = my_data.replace("I", 0)
-	my_data = my_data.replace(0, 0.00000001)
 
 	x_values = my_data[[0, 1, 2, 3, 4, 5, 6, 7]].values
 	y_values_1 = my_data[[8]].values
 
 	# Dataset description says add 1.5 to get age in year
-	y_values = y_values_1 + 1.5
+	y_values_1 = y_values_1 + 1.5
 
 	# Take the log of the entire dataset
-	x_values = numpy.log(x_values)
-	y_values = numpy.log(y_values)
+	#x_values = numpy.log(x_values)
+	y_values = numpy.log(y_values_1)
 
 	model = linear_model.LinearRegression()
 	model.fit(x_values, y_values)
@@ -69,8 +68,8 @@ def log_regress_with_gender():						# FIX ME
 	y_predicted_transformed = numpy.array([math.pow(y_predicted[i][0], math.e) for i in range(len(y_values))]).reshape(-1, 1)
 
 	residual = y_values_1 - y_predicted_transformed
-	plt.scatter(y_values, residual, color='green')
-	plt.title("Residual Against Fitted Values Without Gender")
+	plt.scatter(y_values_1, residual, color='green')
+	plt.title("Residual Against Log Fitted Values With Gender")
 	plt.ylabel("Residual Error")
 	plt.xlabel("Age (In Years)")
 	plt.show()
